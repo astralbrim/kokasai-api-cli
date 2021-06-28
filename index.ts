@@ -14,38 +14,40 @@ program
 
 program
     .command("login")
-    .option("-i, --id")
+    .option("-i, --id", "学籍番号を指定します")
     .action((cmd, options) => { login(parseCommandOptions(options)) })
 
 program
     .command("auth")
-    .option("-i, --id")
-    .option("-p, --password")
+    .option("-i, --id", "学籍番号を指定します")
+    .option("-p, --password", "メールに送られてきたパスワードを指定します")
     .action((cmd, options) => {auth(parseCommandOptions(options))})
 
 program
     .command("addOwner")
-    .option("-gn, --groupName")
-    .option("-s, --sessionId")
-    .option("-i, --id")
+    .option("-gn, --groupName", "オーナーを追加したいグループ名を指定します")
+    .option("-s, --sessionId", "index.js auth で ログに出力されたセッションidを指定します")
+    .option("-i, --id", "追加したいオーナーの学籍番号を指定します")
     .action((cmd, options) => {addOwner(parseCommandOptions(options))})
 
 program
     .command("addMember")
-    .option("-gn, --groupName")
-    .option("-i, --id")
+    .option("-gn, --groupName", "メンバーを追加したいグループ名を指定します")
+    .option("-i, --id", "追加したいメンバーの学籍番号を指定します")
+    .option("-s, --sessionId", "index.js auth で ログに出力されたセッションidを指定します")
     .action((cmd, options) => {addMember(parseCommandOptions(options))})
 
 program
     .command("getGroupList")
-    .option("-s, --sessionId")
+    .option("-s, --sessionId", "index.js auth で ログに出力されたセッションidを指定します")
     .action((cmd, options) => {getGroup(parseCommandOptions(options))})
 
 program
     .command("getGroupUserList")
-    .option("-s, --sessionId")
-    .option("-gn, --groupName")
+    .option("-s, --sessionId", "index.js auth で ログに出力されたセッションidを指定します")
+    .option("-gn, --groupName", "ユーザーリストを取得したいグループ名を指定します")
     .action((cmd, options) => {getGroupUserList(parseCommandOptions(options))})
+
 
 
 program.parse(process.argv);
