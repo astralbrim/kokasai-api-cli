@@ -1,3 +1,3 @@
 #!/usr/bin/env node
 
-require("~/node_modules/@cheichey_/kokasai-cli/dist/kokasai")();
+require("~/node_modules/@cheichey_/kokasai-cli/dist/kokasai.js/kokasai")();
