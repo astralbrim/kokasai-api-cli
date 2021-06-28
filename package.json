@@ -3,7 +3,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "call kokasai-api cli",
   "main": "kokasai.ts",
   "repository": "https://github.com/gKokasai/kokasai-cli",
