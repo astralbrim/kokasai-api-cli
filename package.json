@@ -1,5 +1,8 @@
 {
-  "name": "kokasai-cli",
+  "name": "@cheichey_/kokasai-cli",
+  "publishConfig": {
+    "access": "public"
+  },
   "version": "1.0.0",
   "description": "call kokasai-api cli",
   "main": "kokasai.ts",
@@ -15,6 +18,9 @@
     "typescript": "^4.3.4"
   },
   "scripts": {
-    "compile" : "tsc index.ts --outDir ./dist/kokasai.js"
+    "compile" : "tsc kokasai.ts --outDir ./dist/kokasai.js"
+  },
+  "bin": {
+    "kokasai": "bin/kokasai-cli.js"
   }
 }
