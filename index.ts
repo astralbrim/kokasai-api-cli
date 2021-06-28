@@ -3,6 +3,7 @@ import auth from "./commands/auth"
 import addOwner from "./commands/addOwner";
 import addMember from "./commands/addMember";
 import getGroup from "./commands/getGroupList";
+import getGroupUserList from "./commands/getGroupUserList";
 const program = require('commander');
 
 
@@ -38,6 +39,12 @@ program
     .command("getGroupList")
     .option("-s, --sessionId")
     .action((cmd, options) => {getGroup(options)})
+
+program
+    .command("getGroupUserList")
+    .option("-s, --sessionId")
+    .option("-gn, --groupName")
+    .action((cmd, options) => {getGroupUserList(options)})
 
 program.parse(process.argv);
 
