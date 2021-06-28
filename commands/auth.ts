@@ -1,8 +1,8 @@
 import { postAuth } from "../api/api"
 
 const auth = (options) => {
-    console.log(options.args);
-    postAuth(options.args[0], options.args[1])
+    const { id, password } = options;
+    postAuth(id, password)
     .then(
         (response) => {
             console.log("Auth OK")

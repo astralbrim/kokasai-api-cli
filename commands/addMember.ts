@@ -1,8 +1,7 @@
 import { getGroupUserList, postGroupUserList } from "../api/api";
 
 const addMember = (options) => {
-    const groupName = options.args[0];
-    const sessionId = options.args[2];
+    const { groupName, sessionId } = options;
     getGroupUserList(groupName, sessionId)
         .then(
             (response) => {

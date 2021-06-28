@@ -1,7 +1,8 @@
 import { postLogin } from "../api/api"
 
 const login = (options) => {
-  postLogin(options.args[0]).then(
+  const { id } = options;
+  postLogin(id).then(
     (response) => {
       console.log("Logged In")
     }

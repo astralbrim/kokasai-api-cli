@@ -1,7 +1,7 @@
 import { getGroupList } from "../api/api";
 
 const getGroup = (options) => {
-    const sessionId = options.args[0];
+    const { sessionId } = options;
 
     getGroupList(sessionId).then(
         (response) => {
