@@ -22,7 +22,7 @@ const defaultHeaders = (sessionId): { [key: string]: unknown } => ({
   Session: sessionId,
 });
 
-export const URL = "https://dev-api.kokasai.com";
+export const URL = "https://api.kokasai.com";
 
 /**
  * ログイン認証されているか取得する。

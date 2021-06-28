@@ -1,6 +1,8 @@
 import login from "./commands/login";
 import auth from "./commands/auth"
 import addOwner from "./commands/addOwner";
+import addMember from "./commands/addMember";
+import getGroup from "./commands/getGroupList";
 const program = require('commander');
 
 
@@ -22,15 +24,20 @@ program
 program
     .command("addOwner")
     .option("-gn, --groupName")
-    .option("-i, --id")
     .option("-s, --sessionId")
+    .option("-i, --id")
     .action((cmd, options) => {addOwner(options)})
 
 program
     .command("addMember")
     .option("-gn, --groupName")
     .option("-i, --id")
-    .action(() => {console.log("addMember")})
+    .action((cmd, options) => {addMember(options)})
+
+program
+    .command("getGroupList")
+    .option("-s, --sessionId")
+    .action((cmd, options) => {getGroup(options)})
 
 program.parse(process.argv);
 
