@@ -1,16 +1,30 @@
 import { getGroupUserList, postGroupUserList } from "../api/api"
 
 const addOwner = (options) => {
-    const { groupName, sessionId } = options;
+    const { groupName, sessionId, id } = options;
+    let ownerList;
+    let memberList;
     getGroupUserList(groupName, sessionId)
         .then(
             (response) => {
-                const ownerList = response.data.owner;
-                const memberList = response.data.member;
-                if(ownerList.includes(options.args[1])) ownerList.push(options.args[1]);
-                if(memberList.includes(options.args[1])) memberList.push(options.args[1]);
-                postGroupUserList(groupName, {owner: ownerList, member: memberList}, sessionId).then(() => console.log("posted"));
+                ownerList = response.data.owner;
+                memberList = response.data.member;
+                if(!(ownerList.includes(id))) ownerList.push(id);
             }
+        ).catch(
+            (response) => {
+                ownerList = [].concat(id);
+                memberList = [];
+            }
+        ).finally(
+            () => {
+                postGroupUserList(groupName, {owner: ownerList, member: memberList}, sessionId).then(
+                    () => {
+                        console.log("POST GROUP USER SUCCEED RUN \"getGroupUserList\" ✔︎ ");
+                    }
+                );
+            }
+            
         )
 }
 
