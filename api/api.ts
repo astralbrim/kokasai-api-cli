@@ -17,16 +17,9 @@ import {
 axios.defaults.withCredentials = true;
 
 
-export const setSessionId = (id: string) => {
-    process.env.sessionId = id;
-}
 
-export const getSessionId = () => {
-    return process.env.sessionId;
-}
-
-const defaultHeaders = (): { [key: string]: unknown } => ({
-  Session: getSessionId(),
+const defaultHeaders = (sessionId): { [key: string]: unknown } => ({
+  Session: sessionId,
 });
 
 export const URL = "https://dev-api.kokasai.com";
@@ -35,8 +28,8 @@ export const URL = "https://dev-api.kokasai.com";
  * ログイン認証されているか取得する。
  * [GET /auth](https://github.com/gKokasai/api.kokasai.com/blob/master/DOCUMENT.md#get-auth)
  */
-export const getAuth = (): Promise<AxiosResponse<never>> =>
-  axios.get(`${URL}/auth`, { headers: defaultHeaders() });
+export const getAuth = (sessionId: string): Promise<AxiosResponse<never>> =>
+  axios.get(`${URL}/auth`, { headers: defaultHeaders(sessionId) });
 
 /**
  * ログイン認証する。
@@ -71,22 +64,22 @@ export const postLogin = (id?: string): Promise<AxiosResponse<never>> =>{
  * ログアウトする。
  * [POST /logout](https://github.com/gKokasai/api.kokasai.com/blob/master/DOCUMENT.md#post-logout)
  */
-export const postLogout = (): Promise<AxiosResponse<never>> =>
-  axios.post(`${URL}/logout`, undefined, { headers: defaultHeaders() });
+export const postLogout = (sessionId: string): Promise<AxiosResponse<never>> =>
+  axios.post(`${URL}/logout`, undefined, { headers: defaultHeaders(sessionId) });
 
 /**
  * ログアウトする。
  * [POST /logout/all](https://github.com/gKokasai/api.kokasai.com/blob/master/DOCUMENT.md#post-logoutall)
  */
-export const postLogoutAll = (): Promise<AxiosResponse<never>> =>
-  axios.post(`${URL}/logout/all`, undefined, { headers: defaultHeaders() });
+export const postLogoutAll = (sessionId): Promise<AxiosResponse<never>> =>
+  axios.post(`${URL}/logout/all`, undefined, { headers: defaultHeaders(sessionId) });
 
 /**
  * セッション数を取得する。
  * [GET /session](https://github.com/gKokasai/api.kokasai.com/blob/master/DOCUMENT.md#get-session)
  */
-export const getSession = (): Promise<AxiosResponse<GetSessionResponse>> =>
-  axios.get(`${URL}/session`, { headers: defaultHeaders() });
+export const getSession = (sessionId): Promise<AxiosResponse<GetSessionResponse>> =>
+  axios.get(`${URL}/session`, { headers: defaultHeaders(sessionId) });
 
 /**
  * ドキュメントファイルを取得する。
@@ -94,10 +87,11 @@ export const getSession = (): Promise<AxiosResponse<GetSessionResponse>> =>
  * @param documentName 取得するドキュメントの名前
  */
 export const getDocument = (
-  documentName: string
+  documentName: string,
+  sessionId: string
 ): Promise<AxiosResponse<Blob>> =>
   axios.get(`${URL}/document/${documentName}`, {
-    headers: defaultHeaders(),
+    headers: defaultHeaders(sessionId),
     responseType: "blob",
   });
 
@@ -109,11 +103,12 @@ export const getDocument = (
  */
 export const postDocument = (
   documentName: string,
-  document: File
+  document: File,
+  sessionId: string
 ): Promise<AxiosResponse<never>> => {
   const formData = new FormData();
   formData.append("file", document);
-  const headers = defaultHeaders();
+  const headers = defaultHeaders(sessionId);
   headers["content-type"] = "multipart/form-data";
   return axios.post(`${URL}/document/${documentName}`, formData, { headers });
 };
@@ -122,8 +117,8 @@ export const postDocument = (
  * 全グループ一覧を取得する。
  * [GET /group/list](https://github.com/gKokasai/api.kokasai.com/blob/master/DOCUMENT.md#get-grouplist)
  */
-export const getGroupList = (): Promise<AxiosResponse<GetGroupListResponse>> =>
-  axios.get(`${URL}/group/list`, { headers: defaultHeaders() });
+export const getGroupList = (sessionId: string): Promise<AxiosResponse<GetGroupListResponse>> =>
+  axios.get(`${URL}/group/list`, { headers: defaultHeaders(sessionId) });
 
 /**
  * グループに紐づけられているドキュメントファイル一覧を取得する。
@@ -131,10 +126,11 @@ export const getGroupList = (): Promise<AxiosResponse<GetGroupListResponse>> =>
  * @param groupName 取得するグループの名前
  */
 export const getGroupDocumentList = (
-  groupName: string
+  groupName: string,
+  sessionId: string,
 ): Promise<AxiosResponse<GetGroupDocumentListResponse>> =>
   axios.get(`${URL}/group/document/list/${groupName}`, {
-    headers: defaultHeaders(),
+    headers: defaultHeaders(sessionId),
   });
 
 /**
@@ -145,10 +141,11 @@ export const getGroupDocumentList = (
  */
 export const postGroupDocumentList = (
   groupName: string,
-  data: PostGroupDocumentListRequest
+  data: PostGroupDocumentListRequest,
+  sessionId: string
 ): Promise<AxiosResponse<never>> =>
   axios.post(`${URL}/group/document/list/${groupName}`, data, {
-    headers: defaultHeaders(),
+    headers: defaultHeaders(sessionId),
   });
 
 /**
@@ -157,10 +154,11 @@ export const postGroupDocumentList = (
  * @param groupName 取得するグループの名前
  */
 export const getGroupUserList = (
-  groupName: string
+  groupName: string,
+  sessionId: string,
 ): Promise<AxiosResponse<GetGroupUserListResponse>> =>
   axios.get(`${URL}/group/user/list/${groupName}`, {
-    headers: defaultHeaders(),
+    headers: defaultHeaders(sessionId),
   });
 
 /**
@@ -171,37 +169,39 @@ export const getGroupUserList = (
  */
 export const postGroupUserList = (
   groupName: string,
-  data: PostGroupUserListRequest
+  data: PostGroupUserListRequest,
+  sessionId: string
 ): Promise<AxiosResponse<never>> =>
   axios.post(`${URL}/group/user/list/${groupName}`, data, {
-    headers: defaultHeaders(),
+    headers: defaultHeaders(sessionId),
   });
 
 /**
  * ユーザーがアクセスできるドキュメントファイルの一覧を取得する。
  * [GET /user/document/list](https://github.com/gKokasai/api.kokasai.com/blob/master/DOCUMENT.md#get-userdocumentlist)
  */
-export const getUserDocumentList = (): Promise<
+export const getUserDocumentList = (sessionId: string): Promise<
   AxiosResponse<GetUserDocumentListResponse>
-> => axios.get(`${URL}/user/document/list`, { headers: defaultHeaders() });
+> => axios.get(`${URL}/user/document/list`, { headers: defaultHeaders(sessionId) });
 
 /**
  * ユーザーが属しているグループ一覧を取得する。
  * [GET /user/group/list](https://github.com/gKokasai/api.kokasai.com/blob/master/DOCUMENT.md#get-usergrouplist)
  */
-export const getUserGroupList = (): Promise<
+export const getUserGroupList = (sessionId: string): Promise<
   AxiosResponse<GetUserGroupListResponse>
-> => axios.get(`${URL}/user/group/list`, { headers: defaultHeaders() });
+> => axios.get(`${URL}/user/group/list`, { headers: defaultHeaders(sessionId) });
 
 /**
  * 指定グループのフォーム一覧を取得する
  * [GET /group/form/list/](https://github.com/gKokasai/api.kokasai.com/blob/master/DOCUMENT.md#get-groupformlistname)
  */
 export const getGroupFormList = (
-  groupName: string
+  groupName: string,
+  sessionId: string
 ): Promise<AxiosResponse<GetGroupFormListResponse>> =>
   axios.get(`${URL}/group/form/list/${groupName}`, {
-    headers: defaultHeaders(),
+    headers: defaultHeaders(sessionId),
   });
 
 /**
@@ -212,10 +212,11 @@ export const getGroupFormList = (
  */
 export const getGroupForm = (
   groupName: string,
-  formName: string
+  formName: string,
+  sessionId: string,
 ): Promise<AxiosResponse<GetGroupFormResponse>> =>
   axios.get(`${URL}/group/form/get/${groupName}/${formName}`, {
-    headers: defaultHeaders(),
+    headers: defaultHeaders(sessionId),
   });
 
 /** 指定グループのフォーム送信を行う
@@ -227,8 +228,10 @@ export const getGroupForm = (
 export const postGroupFormSubmit = (
   groupName: string,
   formName: string,
-  data: PostGroupFormSubmitRequest
+  data: PostGroupFormSubmitRequest,
+  sessionId: string,
+
 ): Promise<AxiosResponse<never>> =>
   axios.post(`${URL}/group/form/submit/${groupName}/${formName}`, data, {
-    headers: defaultHeaders(),
+    headers: defaultHeaders(sessionId),
   });

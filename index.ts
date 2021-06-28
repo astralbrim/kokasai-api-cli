@@ -1,5 +1,6 @@
 import login from "./commands/login";
 import auth from "./commands/auth"
+import addOwner from "./commands/addOwner";
 const program = require('commander');
 
 
@@ -22,7 +23,8 @@ program
     .command("addOwner")
     .option("-gn, --groupName")
     .option("-i, --id")
-    .action()
+    .option("-s, --sessionId")
+    .action((cmd, options) => {addOwner(options)})
 
 program
     .command("addMember")

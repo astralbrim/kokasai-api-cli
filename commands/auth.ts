@@ -3,9 +3,12 @@ import { postAuth } from "../api/api"
 const auth = (options) => {
     console.log(options.args);
     postAuth(options.args[0], options.args[1])
-        .then(
-            () => console.log("Auth OK")
-        )
+    .then(
+        (response) => {
+            console.log("Auth OK")
+            console.info(response.headers.session)
+        }
+    )
 }
 
 export default auth;
