@@ -7,6 +7,7 @@ var addMember_1 = require("./commands/addMember");
 var getGroupList_1 = require("./commands/getGroupList");
 var getGroupUserList_1 = require("./commands/getGroupUserList");
 var parseCommandOptions_1 = require("./parseCommandOptions");
+var postAssignForm_1 = require("./commands/postAssignForm");
 var program = require('commander');
 program
     .version('1.0.0')
@@ -47,5 +48,12 @@ program
     .option("-s, --sessionId", "index.js auth で ログに出力されたセッションidを指定します")
     .option("-gn, --groupName", "ユーザーリストを取得したいグループ名を指定します")
     .action(function (cmd, options) { getGroupUserList_1["default"](parseCommandOptions_1.parseCommandOptions(options)); });
+program
+    .command("postAssignForm")
+    .description("存在するグループにフォームを割り当てます. オプションで割り当てたいグループ名とセッションidを指定してください")
+    .option("-s, --sessionId", "ログに出力されたセッションidを指定します")
+    .option("-gn, --groupName", "フォームを割り当てたいグループ名を指定します")
+    .option("-fn, --formName", "グループに割り当てたいフォーム名を指定します")
+    .action(function (cmd, options) { return postAssignForm_1["default"](parseCommandOptions_1.parseCommandOptions(options)); });
 program.parse(process.argv);
 exports.program = program;

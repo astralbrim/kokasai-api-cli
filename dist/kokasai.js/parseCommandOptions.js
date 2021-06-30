@@ -16,9 +16,23 @@ var parseCommandOptions = function (options) {
     var optionList = options.opts();
     var optionsMap;
     Object.keys(optionList).forEach(function (option, index) {
-        var _a;
-        optionsMap = __assign(__assign({}, optionsMap), (_a = {}, _a[option] = options.args[index], _a));
+        var _a, _b;
+        if (((options.args[index].slice(0, 1) === "["))) {
+            optionsMap = __assign(__assign({}, optionsMap), (_a = {}, _a[option] = [], _a));
+            var targetString = options.args[index];
+            targetString = targetString.replace("[", "");
+            targetString = targetString.replace("]", "");
+            var targetStringArray = targetString.split(",");
+            targetStringArray.forEach(function (str, index) {
+                var _a;
+                optionsMap = __assign(__assign({}, optionsMap), (_a = {}, _a[option] = optionsMap[option].concat(str), _a));
+            });
+        }
+        else {
+            optionsMap = __assign(__assign({}, optionsMap), (_b = {}, _b[option] = options.args[index], _b));
+        }
     });
+    console.log(optionsMap);
     return optionsMap;
 };
 exports.parseCommandOptions = parseCommandOptions;

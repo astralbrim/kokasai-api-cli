@@ -5,6 +5,7 @@ import addMember from "./commands/addMember";
 import getGroup from "./commands/getGroupList";
 import getGroupUserList from "./commands/getGroupUserList";
 import { parseCommandOptions } from "./parseCommandOptions";
+import postAssignForm from "./commands/postAssignForm";
 const program = require('commander');
 
 
@@ -54,6 +55,13 @@ program
     .option("-gn, --groupName", "ユーザーリストを取得したいグループ名を指定します")
     .action((cmd, options) => {getGroupUserList(parseCommandOptions(options))})
 
+program
+    .command("postAssignForm")
+    .description("存在するグループにフォームを割り当てます. オプションで割り当てたいグループ名とセッションidを指定してください")
+    .option("-s, --sessionId", "ログに出力されたセッションidを指定します")
+    .option("-gn, --groupName", "フォームを割り当てたいグループ名を指定します")
+    .option("-fn, --formName", "グループに割り当てたいフォーム名を指定します")
+    .action((cmd, options) => postAssignForm(parseCommandOptions(options)))
 
 
 program.parse(process.argv);

@@ -1,13 +1,13 @@
 "use strict";
 exports.__esModule = true;
-exports.postGroupFormSubmit = exports.getGroupForm = exports.getGroupFormList = exports.getUserGroupList = exports.getUserDocumentList = exports.postGroupUserList = exports.getGroupUserList = exports.postGroupDocumentList = exports.getGroupDocumentList = exports.getGroupList = exports.postDocument = exports.getDocument = exports.getSession = exports.postLogoutAll = exports.postLogout = exports.postLogin = exports.postAuth = exports.getAuth = exports.URL = void 0;
+exports.postGroupFormSubmit = exports.getGroupForm = exports.getGroupFormList = exports.getUserGroupList = exports.getUserDocumentList = exports.postFormAssign = exports.getFormAssign = exports.postGroupUserList = exports.getGroupUserList = exports.postGroupDocumentList = exports.getGroupDocumentList = exports.getGroupList = exports.postDocument = exports.getDocument = exports.getSession = exports.postLogoutAll = exports.postLogout = exports.postLogin = exports.postAuth = exports.getAuth = exports.URL = void 0;
 var js_base64_1 = require("js-base64");
 var axios_1 = require("axios");
 axios_1["default"].defaults.withCredentials = true;
 var defaultHeaders = function (sessionId) { return ({
     Session: sessionId
 }); };
-exports.URL = "https://api.kokasai.com";
+exports.URL = "https://dev-api.kokasai.com";
 /**
  * ログイン認証されているか取得する。
  * [GET /auth](https://github.com/gKokasai/api.kokasai.com/blob/master/DOCUMENT.md#get-auth)
@@ -142,6 +142,27 @@ var postGroupUserList = function (groupName, data, sessionId) {
     });
 };
 exports.postGroupUserList = postGroupUserList;
+/**
+* フォームが割り当てられたグループ一覧を取得する。
+* [GET /form/assign](https://github.com/gKokasai/api.kokasai.com/blob/master/DOCUMENT.md#get-formassignname)
+* @param formName フォーム名
+*/
+var getFormAssign = function (formName, sessionId) {
+    return axios_1["default"].get(exports.URL + "/form/assign/" + formName, { headers: defaultHeaders(sessionId) });
+};
+exports.getFormAssign = getFormAssign;
+/**
+ * フォームが割り当てられたグループ一覧を変更する。
+ * [POST /form/assign](https://github.com/gKokasai/api.kokasai.com/blob/master/DOCUMENT.md#post-formassignname)
+ * @param formName フォーム名
+ * @param data 変更後の一覧
+ */
+var postFormAssign = function (formName, data, sessionId) {
+    return axios_1["default"].post(exports.URL + "/form/assign/" + formName, data, {
+        headers: defaultHeaders(sessionId)
+    });
+};
+exports.postFormAssign = postFormAssign;
 /**
  * ユーザーがアクセスできるドキュメントファイルの一覧を取得する。
  * [GET /user/document/list](https://github.com/gKokasai/api.kokasai.com/blob/master/DOCUMENT.md#get-userdocumentlist)

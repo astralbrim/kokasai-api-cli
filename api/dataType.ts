@@ -71,6 +71,15 @@ export type GetGroupUserListResponse = {
   member: string[];
 };
 
+export type GetFormAssignResponse = {
+  group: string[];
+};
+
+export type PostFormAssignRequest = {
+  group: string[];
+};
+
+
 export type PostGroupUserListRequest = {
   owner: string[];
   member: string[];

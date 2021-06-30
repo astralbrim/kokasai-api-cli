@@ -12,6 +12,8 @@ import {
   PostGroupDocumentListRequest,
   PostGroupFormSubmitRequest,
   PostGroupUserListRequest,
+  GetFormAssignResponse,
+  PostFormAssignRequest
 } from "./dataType";
 
 axios.defaults.withCredentials = true;
@@ -22,7 +24,7 @@ const defaultHeaders = (sessionId): { [key: string]: unknown } => ({
   Session: sessionId,
 });
 
-export const URL = "https://api.kokasai.com";
+export const URL = "https://dev-api.kokasai.com";
 
 /**
  * ログイン認証されているか取得する。
@@ -175,6 +177,33 @@ export const postGroupUserList = (
   axios.post(`${URL}/group/user/list/${groupName}`, data, {
     headers: defaultHeaders(sessionId),
   });
+
+  /**
+ * フォームが割り当てられたグループ一覧を取得する。
+ * [GET /form/assign](https://github.com/gKokasai/api.kokasai.com/blob/master/DOCUMENT.md#get-formassignname)
+ * @param formName フォーム名
+ */
+export const getFormAssign = (
+  formName: string,
+  sessionId: string
+): Promise<AxiosResponse<GetFormAssignResponse>> =>
+  axios.get(`${URL}/form/assign/${formName}`, { headers: defaultHeaders(sessionId) });
+
+/**
+ * フォームが割り当てられたグループ一覧を変更する。
+ * [POST /form/assign](https://github.com/gKokasai/api.kokasai.com/blob/master/DOCUMENT.md#post-formassignname)
+ * @param formName フォーム名
+ * @param data 変更後の一覧
+ */
+export const postFormAssign = (
+  formName: string,
+  data: PostFormAssignRequest,
+  sessionId: string
+): Promise<AxiosResponse<never>> =>
+  axios.post(`${URL}/form/assign/${formName}`, data, {
+    headers: defaultHeaders(sessionId),
+  });
+
 
 /**
  * ユーザーがアクセスできるドキュメントファイルの一覧を取得する。
